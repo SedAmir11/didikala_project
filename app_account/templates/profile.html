@@ -37,7 +37,7 @@
             <!-- Start ads -->
             <div class="ads-header-wrapper">
                 <a href="#" class="ads-header hidden-sm" target="_blank"
-                    style="background-image: url({% static "img/banner/large-ads.jpg" %})"></a>
+                    style="background-image: url({% static "img/banner/large-ads.jpg"%})"></a>
             </div>
             <!-- End ads -->
             <!-- Start topbar -->
@@ -83,11 +83,18 @@
                                 <li class="nav-item account dropdown">
                                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        <span class="label-dropdown">حساب کاربری</span>
+                                        <span class="label-dropdown">
+                                            {% if user.is_authenticated  %}
+                                            {{user.username}}
+                                            {% else %}
+                                            حساب کاربری
+                                            {% endif %}
+                                        </span>
                                         <i class="mdi mdi-account-circle-outline"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
-                                        <a class="dropdown-item" href="#">
+                                        {% if user.is_authenticated  %}
+                                        <a class="dropdown-item" href="profile">
                                             <i class="mdi mdi-account-card-details-outline"></i>پروفایل
                                         </a>
                                         <a class="dropdown-item" href="#">
@@ -98,9 +105,20 @@
                                             <i class="mdi mdi-account-edit-outline"></i>ویرایش حساب کاربری
                                         </a>
                                         <div class="dropdown-divider" role="presentation"></div>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="mdi mdi-logout-variant"></i>خروج
+                                        {% endif %}
+                                        {% if user.is_authenticated  %}
+                                        <form action="{% url 'logout' %}" method="post" >
+                                            {% csrf_token %}
+                                            <button type = 'submit' style="border: none; font-size: 14px;
+                                                color: #607d8b;">
+                                                خروج
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <a class="dropdown-item" href="login">
+                                            <i class="mdi mdi-login-variant"></i>ورود
                                         </a>
+                                        {% endif %}
                                     </div>
                                 </li>
                             </ul>
@@ -109,7 +127,7 @@
                 </div>
             </div>
             <!-- End topbar -->
-
+        
             <!-- Start bottom-header -->
             <div class="bottom-header dt-sl mb-sm-bottom-header">
                 <div class="container main-container">
@@ -585,7 +603,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/1.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/1.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -613,7 +631,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/2.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/2.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -641,7 +659,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/3.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/3.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -675,7 +693,7 @@
                                                     9,500,000 <span>تومان</span></span>
                                             </p>
                                         </div>
-
+        
                                         <div>
                                             <a href="#" class="header-cart-info-submit">
                                                 ثبت سفارش
