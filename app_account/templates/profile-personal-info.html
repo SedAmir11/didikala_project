@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+
 <body>
     <div class="wrapper">
         <!-- Start header -->
@@ -72,7 +74,7 @@
                                             <span class="float-left badge badge-dark">۴</span>
                                             <i class="mdi mdi-comment-text-outline"></i>پیغام ها
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="/profile-additional-info">
                                             <i class="mdi mdi-account-edit-outline"></i>ویرایش حساب کاربری
                                         </a>
                                         <div class="dropdown-divider" role="presentation"></div>
@@ -904,14 +906,12 @@
                                 <div class="profile-sidebar-header dt-sl">
                                     <div class="d-flex align-items-center">
                                         <div class="profile-avatar">
-                                            <img src="{% if profile.profile_picture.url != None %}
-                                            {{profile.profile_picture.url}}
-                                            {% else %}
-                                            {% static "img/theme/avatar.png" %}
-                                            {% endif %}" alt="profile Picture">
+                                            <img src="{{profile.profile_picture.url}}" alt="Profile Picture">
                                         </div>
                                         <div class="profile-header-content mr-3 mt-2">
-                                            <span class="d-block profile-username">{{user.first_name}} {{user.last_name}}</span>
+                                            <span class="d-block profile-username">
+                                                {{ user.first_name }} {{ user.last_name }}
+                                            </span>
                                             <span class="d-block profile-phone">{{profile.phone_number}}</span>
                                         </div>
                                     </div>
@@ -1012,133 +1012,70 @@
                     <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12">
                         <div class="row">
                             <div class="col-12">
-                                <div class="px-3 px-res-0">
+                                <div class="px-3">
                                     <div
-                                        class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2 px-res-1">
-                                        <h2>ویرایش اطلاعات شخصی</h2>
+                                        class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2">
+                                        <h2>اطلاعات شخصی</h2>
                                     </div>
-                                    <div class="form-ui additional-info dt-sl dt-sn pt-4">
-                                        <form action="" method = "post" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>نام</h3>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <input type="text" class="input-ui pr-2" name = "first_name"
-                                                            placeholder="نام خود را وارد نمایید" value="{{user.first_name}}">
-                                                    </div>
+                                    <div class="profile-section dt-sl">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>نام و نام خانوادگی:</span>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>نام و نام خانوادگی</h3>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <input type="text" class="input-ui pr-2" name = "last_name"
-                                                            placeholder="نام خانوادگی خود را وارد نمایید"
-                                                            value="{{user.last_name}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>کد ملی</h3>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "national_id"
-                                                            value = "{{profile.national_id}}" placeholder="-">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>شماره موبایل</h3>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "phone_number"
-                                                            placeholder="شماره موبایل خود را وارد نمایید"
-                                                            value="{{profile.phone_number}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>آدرس ایمیل</h3>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <input type="email" class="input-ui pl-2 text-left dir-ltr" name = "email"
-                                                            placeholder="آدرس ایمیل خود را وارد نمایید"
-                                                            value="{{user.email}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <div class="form-row-title">
-                                                        <h3>عکس پروفایل</h3>
-                                                    </div>
-                                                    <div class="form-row mt-2">
-                                                        <div class="input-group">
-                                                            <div class="custom-file">
-                                                                <input type="file" class="custom-file-input" name = "profile_picture"
-                                                                    id="inputGroupFile04"
-                                                                    accept = "image/*"
-                                                                    aria-describedby="inputGroupFileAddon04">
-                                                                <label class="custom-file-label"
-                                                                    for="inputGroupFile04">
-                                                                    {% if profile.profile_picture.url != None %}
-                                                                    {{profile.profile_picture.url}}
-                                                                    {% else %}
-                                                                    انتخاب عکس
-                                                                    {% endif %}
-                                                                    
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 mb-3">
-                                                    <div class="pt-2 pb-2 mb-3 dt-sl">
-                                                        <div class="form-row-title mb-2">
-                                                            <h3>شماره کارت</h3>
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "card_no"
-                                                                value = "{{profile.card_no}}" placeholder="-">
-                                                            <button class="btn btn-success float-left mt-3">بررسی
-                                                                اطلاعات</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 mb-3">
-                                                    <div class="form-row mt-2">
-                                                        <div class="custom-control custom-checkbox float-right mt-2">
-                                                            <input type="checkbox" class="custom-control-input"
-                                                                id="customCheck3">
-                                                            <label class="custom-control-label text-justify"
-                                                                for="customCheck3">
-                                                                تبعه خارجی فاقد کد ملی هستم
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-row mt-2">
-                                                        <div class="custom-control custom-checkbox float-right mt-2">
-                                                            <input type="checkbox" class="custom-control-input"
-                                                                id="customCheck4">
-                                                            <label class="custom-control-label text-justify"
-                                                                for="customCheck4">
-                                                                اشتراک در خبرنامه دیدیکالا
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                <div class="value-info">
+                                                    <span>
+                                                        {{ user.first_name }} {{ user.last_name }}
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <div class="dt-sl">
-                                                <div class="form-row mt-3 justify-content-end">
-                                                    <button class="btn-primary-cm btn-with-icon ml-2" type = "submit">
-                                                        <i class="mdi mdi-account-circle-outline"></i>
-                                                        ثبت اطلاعات کاربری
-                                                    </button>
-                                                    <button class="btn-primary-cm bg-secondary">انصراف</button>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>پست الکترونیک:</span>
+                                                </div>
+                                                <div class="value-info">
+                                                    <span>{{user.email}}</span>
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>شماره تلفن همراه:</span>
+                                                </div>
+                                                <div class="value-info">
+                                                    <span>{{profile.phone_number}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>کد ملی:</span>
+                                                </div>
+                                                <div class="value-info">
+                                                    <span>{{profile.national_id}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>دریافت خبرنامه:</span>
+                                                </div>
+                                                <div class="value-info">
+                                                    <span>خیر</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="label-info">
+                                                    <span>شماره کارت:</span>
+                                                </div>
+                                                <div class="value-info">
+                                                    <span>{{profile.card_no}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-section-link">
+                                            <a href="#" class="border-bottom-dt">
+                                                <i class="mdi mdi-account-edit-outline"></i>
+                                                ویرایش اطلاعات شخصی
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1511,4 +1448,5 @@
         <!-- End footer -->
     </div>
 </body>
+
 </html>

@@ -74,4 +74,4 @@ class image(models.Model):
 
     def __str__(self):
         return self.image.url
-    
+

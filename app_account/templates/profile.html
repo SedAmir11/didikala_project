@@ -94,14 +94,14 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
                                         {% if user.is_authenticated  %}
-                                        <a class="dropdown-item" href="profile">
+                                        <a class="dropdown-item" href="/profile">
                                             <i class="mdi mdi-account-card-details-outline"></i>پروفایل
                                         </a>
                                         <a class="dropdown-item" href="#">
                                             <span class="float-left badge badge-dark">۴</span>
                                             <i class="mdi mdi-comment-text-outline"></i>پیغام ها
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="/profile-additional-info">
                                             <i class="mdi mdi-account-edit-outline"></i>ویرایش حساب کاربری
                                         </a>
                                         <div class="dropdown-divider" role="presentation"></div>
@@ -933,13 +933,13 @@
                                 <div class="profile-sidebar-header dt-sl">
                                     <div class="d-flex align-items-center">
                                         <div class="profile-avatar">
-                                            <img src="{% static "img/theme/avatar.png" %}" alt="">
+                                            <img src="{{profile.profile_picture.url}}" alt="Profile Picture">
                                         </div>
                                         <div class="profile-header-content mr-3 mt-2">
                                             <span class="d-block profile-username">
                                                 {{ user.first_name }} {{ user.last_name }}
                                             </span>
-                                            <span class="d-block profile-phone">09xxxxxxxxx</span>
+                                            <span class="d-block profile-phone">{{profile.phone_number}}</span>
                                         </div>
                                     </div>
                                     <div class="profile-point mt-3 mb-2 dt-sl">
@@ -955,10 +955,14 @@
                                                 </a>
                                             </div>
                                             <div class="col-6 text-center">
-                                                <a href="#">
-                                                    <i class="mdi mdi-logout-variant"></i>
-                                                    <span class="d-block">خروج از حساب</span>
-                                                </a>
+                                                <form action="{% url 'logout' %}" method="post" style="border: none;">
+                                                    {% csrf_token %}
+                                                    <button type = "submit" style = "border: none; color: #7b7b7b;
+                                                    background-color: #fff;">
+                                                        <i class="mdi mdi-logout-variant"></i>
+                                                        <span class="d-block">خروج از حساب</span>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -1065,7 +1069,7 @@
                                                     <span>شماره تلفن همراه:</span>
                                                 </div>
                                                 <div class="value-info">
-                                                    <span>09xxxxxxxxx</span>
+                                                    <span>{{profile.phone_number}}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-sm-12">
@@ -1073,7 +1077,7 @@
                                                     <span>کد ملی:</span>
                                                 </div>
                                                 <div class="value-info">
-                                                    <span>-</span>
+                                                    <span>{{profile.national_id}}</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-sm-12">
@@ -1089,7 +1093,7 @@
                                                     <span>شماره کارت:</span>
                                                 </div>
                                                 <div class="value-info">
-                                                    <span>-</span>
+                                                    <span>{{profile.card_no}}</span>
                                                 </div>
                                             </div>
                                         </div>
