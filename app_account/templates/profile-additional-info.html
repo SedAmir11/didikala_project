@@ -1,41 +1,14 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fa">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="theme-color" content="#f7858d">
-    <meta name="msapplication-navbutton-color" content="#f7858d">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
-    <title>didikala | Profile-Additional-Info Page</title>
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="{% static "css/vendor/font-awesome.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/materialdesignicons.min.css" %}">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static "css/vendor/bootstrap.min.css" %}">
-    <!-- Plugins -->
-    <link rel="stylesheet" href="{% static "css/vendor/bootstrap-slider.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/owl.carousel.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/jquery.horizontalmenu.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/jquery-stack-menu.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/fancybox.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/nice-select.css" %}">
-    <link rel="stylesheet" href="{% static "css/vendor/nouislider.min.css" %}">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="{% static "css/main.css" %}">
-    <link rel="stylesheet" href="{% static "css/colors/default.css" %}" id="colorswitch">
-</head>
-
 <body>
     <div class="wrapper">
         <!-- Start header -->
+        {% block header %}
         <header class="main-header">
             <!-- Start ads -->
             <div class="ads-header-wrapper">
                 <a href="#" class="ads-header hidden-sm" target="_blank"
-                    style="background-image: url({% static "img/banner/large-ads.jpg" %})"></a>
+                    style="background-image: url({% static "img/banner/large-ads.jpg"%})"></a>
             </div>
             <!-- End ads -->
             <!-- Start topbar -->
@@ -81,11 +54,18 @@
                                 <li class="nav-item account dropdown">
                                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        <span class="label-dropdown">حساب کاربری</span>
+                                        <span class="label-dropdown">
+                                            {% if user.is_authenticated  %}
+                                            {{user.username}}
+                                            {% else %}
+                                            حساب کاربری
+                                            {% endif %}
+                                        </span>
                                         <i class="mdi mdi-account-circle-outline"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-left">
-                                        <a class="dropdown-item" href="#">
+                                        {% if user.is_authenticated  %}
+                                        <a class="dropdown-item" href="profile">
                                             <i class="mdi mdi-account-card-details-outline"></i>پروفایل
                                         </a>
                                         <a class="dropdown-item" href="#">
@@ -96,9 +76,20 @@
                                             <i class="mdi mdi-account-edit-outline"></i>ویرایش حساب کاربری
                                         </a>
                                         <div class="dropdown-divider" role="presentation"></div>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="mdi mdi-logout-variant"></i>خروج
+                                        {% endif %}
+                                        {% if user.is_authenticated  %}
+                                        <form action="{% url 'logout' %}" method="post" >
+                                            {% csrf_token %}
+                                            <button type = 'submit' style="border: none; font-size: 14px;
+                                                color: #607d8b;">
+                                                خروج
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <a class="dropdown-item" href="login">
+                                            <i class="mdi mdi-login-variant"></i>ورود
                                         </a>
+                                        {% endif %}
                                     </div>
                                 </li>
                             </ul>
@@ -107,7 +98,7 @@
                 </div>
             </div>
             <!-- End topbar -->
-
+        
             <!-- Start bottom-header -->
             <div class="bottom-header dt-sl mb-sm-bottom-header">
                 <div class="container main-container">
@@ -583,7 +574,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/1.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/1.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -611,7 +602,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/2.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/2.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -639,7 +630,7 @@
                                         <li class="cart-item">
                                             <a href="#" class="header-basket-list-item">
                                                 <div class="header-basket-list-item-image">
-                                                    <img src="{% static "img/cart/3.jpg" %}" alt="">
+                                                    <img src="{% static "img/cart/3.jpg"%}" alt="">
                                                 </div>
                                                 <div class="header-basket-list-item-content">
                                                     <p class="header-basket-list-item-title">
@@ -673,7 +664,7 @@
                                                     9,500,000 <span>تومان</span></span>
                                             </p>
                                         </div>
-
+        
                                         <div>
                                             <a href="#" class="header-cart-info-submit">
                                                 ثبت سفارش
@@ -899,8 +890,10 @@
             </div>
             <!-- End bottom-header -->
         </header>
+        {% endblock header %}
         <!-- End header -->
         <!-- Start main-content -->
+        {% block content %}
         <main class="main-content dt-sl mb-3">
             <div class="container main-container">
                 <div class="row">
@@ -914,8 +907,8 @@
                                             <img src="{% static "img/theme/avatar.png" %}" alt="">
                                         </div>
                                         <div class="profile-header-content mr-3 mt-2">
-                                            <span class="d-block profile-username">جلال بهرامی راد</span>
-                                            <span class="d-block profile-phone">09xxxxxxxxx</span>
+                                            <span class="d-block profile-username">{{user.first_name}} {{user.last_name}}</span>
+                                            <span class="d-block profile-phone">{{profile.phone_number}}</span>
                                         </div>
                                     </div>
                                     <div class="profile-point mt-3 mb-2 dt-sl">
@@ -1017,15 +1010,16 @@
                                         <h2>ویرایش اطلاعات شخصی</h2>
                                     </div>
                                     <div class="form-ui additional-info dt-sl dt-sn pt-4">
-                                        <form action="">
+                                        <form action="" method = "post">
+                                            {% csrf_token %}
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
                                                     <div class="form-row-title">
                                                         <h3>نام</h3>
                                                     </div>
                                                     <div class="form-row">
-                                                        <input type="text" class="input-ui pr-2"
-                                                            placeholder="نام خود را وارد نمایید" value="جلال">
+                                                        <input type="text" class="input-ui pr-2" name = "first_name"
+                                                            placeholder="نام خود را وارد نمایید" value="{{user.first_name}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -1033,9 +1027,9 @@
                                                         <h3>نام و نام خانوادگی</h3>
                                                     </div>
                                                     <div class="form-row">
-                                                        <input type="text" class="input-ui pr-2"
+                                                        <input type="text" class="input-ui pr-2" name = "last_name"
                                                             placeholder="نام خانوادگی خود را وارد نمایید"
-                                                            value="بهرامی راد">
+                                                            value="{{user.last_name}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -1043,8 +1037,8 @@
                                                         <h3>کد ملی</h3>
                                                     </div>
                                                     <div class="form-row">
-                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr"
-                                                            placeholder="-">
+                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "national_id"
+                                                            value = "{{profile.national_id}}" placeholder="-">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -1052,9 +1046,9 @@
                                                         <h3>شماره موبایل</h3>
                                                     </div>
                                                     <div class="form-row">
-                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr"
+                                                        <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "phone_number"
                                                             placeholder="شماره موبایل خود را وارد نمایید"
-                                                            value="09xxxxxxxxx">
+                                                            value="{{profile.phone_number}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -1062,9 +1056,9 @@
                                                         <h3>آدرس ایمیل</h3>
                                                     </div>
                                                     <div class="form-row">
-                                                        <input type="email" class="input-ui pl-2 text-left dir-ltr"
+                                                        <input type="email" class="input-ui pl-2 text-left dir-ltr" name = "email"
                                                             placeholder="آدرس ایمیل خود را وارد نمایید"
-                                                            value="info@gmail.com">
+                                                            value="{{user.email}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
@@ -1074,7 +1068,7 @@
                                                     <div class="form-row mt-2">
                                                         <div class="input-group">
                                                             <div class="custom-file">
-                                                                <input type="file" class="custom-file-input"
+                                                                <input type="file" class="custom-file-input" name = "picture"
                                                                     id="inputGroupFile04"
                                                                     aria-describedby="inputGroupFileAddon04">
                                                                 <label class="custom-file-label"
@@ -1090,8 +1084,8 @@
                                                             <h3>شماره کارت</h3>
                                                         </div>
                                                         <div class="form-row">
-                                                            <input type="text" class="input-ui pl-2 text-left dir-ltr"
-                                                                placeholder="-">
+                                                            <input type="text" class="input-ui pl-2 text-left dir-ltr" name = "card_no"
+                                                                value = "{{profile.card_no}}" placeholder="-">
                                                             <button class="btn btn-success float-left mt-3">بررسی
                                                                 اطلاعات</button>
                                                         </div>
@@ -1122,7 +1116,7 @@
                                             </div>
                                             <div class="dt-sl">
                                                 <div class="form-row mt-3 justify-content-end">
-                                                    <button class="btn-primary-cm btn-with-icon ml-2">
+                                                    <button class="btn-primary-cm btn-with-icon ml-2" type = "submit">
                                                         <i class="mdi mdi-account-circle-outline"></i>
                                                         ثبت اطلاعات کاربری
                                                     </button>
@@ -1326,8 +1320,10 @@
                 <!-- End Product-Slider -->
             </div>
         </main>
+        {% endblock content %}
         <!-- End main-content -->
         <!-- Start footer -->
+        {% block footer %}
         <footer class="main-footer dt-sl">
             <div class="back-to-top">
                 <a href="#"><span class="icon"><i class="mdi mdi-chevron-up"></i></span> <span>بازگشت به
@@ -1496,50 +1492,8 @@
                 </div>
             </div>
         </footer>
+        {% endblock footer %}
         <!-- End footer -->
     </div>
-    <!-- colorPanel -->
-    <div id="colorswitch-option">
-        <button><i class="mdi mdi-settings"></i></button>
-        <ul>
-            <li class="active" data-path="{% static "css/colors/default.css" %}"><span
-                    style="background-color: #f7858d;"></span></li>
-            <li data-path="{% static "css/colors/amber-color.css" %}"><span style="background-color: #ffab00;"></span></li>
-            <li data-path="{% static "css/colors/blue-color.css" %}"><span style="background-color: #2979ff;"></span></li>
-            <li data-path="{% static "css/colors/blue-grey-color.css" %}"><span style="background-color: #607d8b;"></span>
-            </li>
-            <li data-path="{% static "css/colors/brown-color.css" %}"><span style="background-color: #795548;"></span></li>
-            <li data-path="{% static "css/colors/cyan-color.css" %}"><span style="background-color: #00bcd4;"></span></li>
-            <li data-path="{% static "css/colors/green-color.css" %}"><span style="background-color: #4caf50;"></span></li>
-            <li data-path="{% static "css/colors/indigo-color.css" %}"><span style="background-color: #3f51b5;"></span></li>
-            <li data-path="{% static "css/colors/lime-color.css" %}"><span style="background-color: #cddc39;"></span></li>
-            <li data-path="{% static "css/colors/orange-color.css" %}"><span style="background-color: #ff9800;"></span></li>
-            <li data-path="{% static "css/colors/red-color.css" %}"><span style="background-color: #f44336;"></span></li>
-            <li data-path="{% static "css/colors/teal-color.css" %}"><span style="background-color: #009688;"></span></li>
-            <li data-path="{% static "css/colors/purple-color.css" %}"><span style="background-color: #9c27b0;"></span></li>
-        </ul>
-    </div>
-    <!-- end colorPanel -->
-    <!-- Core JS Files -->
-    <script src="{% static "js/vendor/jquery-3.4.1.min.js" %}"></script>
-    <script src="{% static "js/vendor/popper.min.js" %}"></script>
-    <script src="{% static "js/vendor/bootstrap.min.js" %}"></script>
-    <!-- Plugins -->
-    <script src="{% static "js/vendor/bootstrap-slider.min.js" %}"></script>
-    <script src="{% static "js/vendor/owl.carousel.min.js" %}"></script>
-    <script src="{% static "js/vendor/owl.carousel2.thumbs.min.js" %}"></script>
-    <script src="{% static "js/vendor/jquery.nicescroll.min.js" %}"></script>
-    <script src="{% static "js/vendor/jquery.nice-select.min.js" %}"></script>
-    <script src="{% static "js/vendor/nouislider.min.js" %}"></script>
-    <script src="{% static "js/vendor/jquery.horizontalmenu.js" %}"></script>
-    <script src="{% static "js/vendor/jquery-stack-menu.min.js" %}"></script>
-    <script src="{% static "js/vendor/jquery.fancybox.min.js" %}"></script>
-    <script src="{% static "js/vendor/countdown.min.js" %}"></script>
-    <script src="{% static "js/vendor/wNumb.js" %}"></script>
-    <script src="{% static "js/vendor/ResizeSensor.min.js" %}"></script>
-    <script src="{% static "js/vendor/theia-sticky-sidebar.min.js" %}"></script>
-    <!-- Main JS File -->
-    <script src="{% static "js/main.js" %}"></script>
 </body>
-
 </html>
