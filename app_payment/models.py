@@ -1,5 +1,5 @@
 from django.db import models
-from app_didikala.models import digital_product
+from app_didikala.models import division
 from django.contrib.auth import get_user_model
 
 user = get_user_model()
@@ -16,7 +16,7 @@ class order(models.Model):
 
 class order_item(models.Model):
     order = models.ForeignKey(order , on_delete=models.CASCADE)
-    product = models.ForeignKey(digital_product , on_delete=models.CASCADE)
+    product = models.ForeignKey(division , on_delete=models.CASCADE)
     count = models.PositiveIntegerField()
 
 
@@ -26,7 +26,7 @@ class basket(models.Model):
 
 class basket_item(models.Model):
     basket = models.ForeignKey(basket , on_delete=models.CASCADE)
-    product = models.ForeignKey(digital_product , on_delete=models.CASCADE)
+    product = models.ForeignKey(division , on_delete=models.CASCADE)
     count = models.IntegerField()
 
 

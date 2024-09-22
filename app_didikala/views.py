@@ -1,11 +1,12 @@
-from django.shortcuts import render , redirect
-from django.contrib.auth import login as auth_login , authenticate
-from app_didikala.models import banner , clothes_product , image
+from django.shortcuts import render , get_object_or_404
+from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail , division
 
 def index(request):
+    categories = Category.objects.filter(division_id = 1)
     context = {
         'banner_images' : banner.objects.get(title='home-main').images,
-        'clothes_product' : clothes_product.objects.all()
+        'clothes_product' : Product.objects.filter(categories__in=Category.objects.filter(division_id = 1)).distinct(),
+        'digital_product' : Product.objects.filter(categories__in=Category.objects.filter(division_id = 2)).distinct()
     }
     return render(request , 'index.html' , context)
 
@@ -36,9 +37,6 @@ def page_faq_category(request):
 def page_faq_question(request):
     return render(request , 'page-faq-question.html')
 
-def change_password(request):
-    return render(request , 'password-change.html')
-
 def verify_phone(request):
     return render(request , 'verify-phone-number.html')
 
@@ -48,8 +46,13 @@ def page_privacy(request):
 def single_blog(request):
     return render(request , 'single-blog.html')
 
-def product_page(request):
-    return render(request , 'single-product.html')
+def product_page(request , id):
+    product = get_object_or_404(Product, id=id)
+    product_detail = get_object_or_404(ProductDetail, product=product)
+    return render(request , 'single-product.html' , {'product': product, 
+                                                    'product_detail': product_detail,
+                                                    'without_discount' : f"{((product.price*product.discount)/100) + product.price:,}",
+                                                    'discount_price' : f"{(product.price*product.discount)/100:,}"})
 
 def notavailable_product(request):
     return render(request , 'single-product-not-available.html')
