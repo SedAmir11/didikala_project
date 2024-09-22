@@ -16,9 +16,6 @@ Including another URLconf
 """
 from django.urls import path
 from app_didikala import views
-from django.conf.urls import handler404
-
-handler404 = views.notfoundpage
 
 urlpatterns = [
     path('' , views.index),
