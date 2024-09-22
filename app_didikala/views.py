@@ -11,7 +11,7 @@ def index(request):
     return render(request , 'index.html' , context)
 
 def notfoundpage(request):
-    return render(request , '404.html')
+    return render(request , '404.html' , status=404)
 
 def blog(request):
     return render(request , 'blog.html')
@@ -51,8 +51,8 @@ def product_page(request , id):
     product_detail = get_object_or_404(ProductDetail, product=product)
     return render(request , 'single-product.html' , {'product': product, 
                                                     'product_detail': product_detail,
-                                                    'without_discount' : f"{((product.price*product.discount)/100) + product.price:,}",
-                                                    'discount_price' : f"{(product.price*product.discount)/100:,}"})
+                                                    'without_discount' : f"{round(((product.price*100)/product.discount)):,}",
+                                                    'discount_price' : f"{round(((product.price*100)/product.discount) - product.price):,}"})
 
 def notavailable_product(request):
     return render(request , 'single-product-not-available.html')

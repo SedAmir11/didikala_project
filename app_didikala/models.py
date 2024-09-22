@@ -68,55 +68,59 @@ class Color(models.Model):
         return self.color_name
 
 class Img(models.Model):
-    image = models.ImageField(upload_to='products/prodtctdetail/', null=True, blank=True)  # امکان آپلود تصویر
-    def __str__(self):
-        return str(self.image.url)
-    
-class SpecialFeature(models.Model):
-    title = models.CharField(max_length=100)
-    detail = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE , null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images' , null=True)
+    image = models.ImageField(upload_to='products/prodtctdetail/', null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f" id {self.product.id} = {self.product.name} - {self.image.url}"
+    
+class SpecialFeature(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE , null=True)
+    title = models.CharField(max_length=100)
+    detail = models.TextField()
+
+    def __str__(self):
+        return f"{self.title} {self.detail}"
 
 class DetailDescription(models.Model):
     image = models.ForeignKey(Img, on_delete=models.CASCADE, related_name='detail_descriptions')
     detail = models.TextField()
 
     def __str__(self):
-        return f"{self.image} - {self.detail[:30]}..." # نمایش مختصر از detail
+        return f"{self.image} - {self.detail[:30]}..."
 
 class Description(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='descriptions' , null= True)
     title = models.CharField(max_length=100)
     description_detail = models.ManyToManyField(DetailDescription, related_name='descriptions')
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - id {self.product.id} = {self.product.name}"
 
 class SpecificationDetail(models.Model):
     name = models.CharField(max_length=100)
     detail = models.TextField()
+    autocomplete_fields = ['specification_detail'] 
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.detail}"
 
 class Specifications(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='specifications' , null=True)
     title = models.CharField(max_length=100)
     specification_detail = models.ManyToManyField(SpecificationDetail, related_name='specifications')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE , null=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - id {self.product.id} = {self.product.name}"
 
 class ProductDetail(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_detail')
     title_fa = models.CharField(max_length=100)
     title_en = models.CharField(max_length=100)
-    colors = models.ManyToManyField(Color, related_name='products' , null = True , blank = True)
+    colors = models.ManyToManyField(Color, related_name='products' , blank = True)
     special_features = models.ManyToManyField(SpecialFeature, related_name='products')
     code_number = models.CharField(max_length=50)
-    descriptions = models.ManyToManyField(Description, related_name='products' , null = True , blank = True)
+    descriptions = models.ManyToManyField(Description, related_name='products' , blank = True)
     reviews = models.TextField(null = True , blank = True)
     specifications = models.ManyToManyField(Specifications, related_name='products')
     images = models.ManyToManyField(Img, related_name='products')

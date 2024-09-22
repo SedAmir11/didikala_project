@@ -50,12 +50,10 @@ def additional_info_profile(request):
     national_id = request.POST.get('national_id')
     card_no = request.POST.get('card_no')
     
-    post = request.POST.copy() # to make it mutable
+    post = request.POST.copy()
     if request.POST.get('is_Subscription') is not None:
         post['is_Subscription'] = True
         request.POST = post
-
-
     try:
         additional_info(request.user.userprofile)
     except ObjectDoesNotExist:

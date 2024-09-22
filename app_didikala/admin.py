@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 from app_didikala.models import Brand,division ,Product ,banner ,image , Category, Color, Img, SpecialFeature, DetailDescription, Description, SpecificationDetail, Specifications, ProductDetail
+
 class imageInline(GenericStackedInline):
     model = image
     extra = 1
@@ -36,11 +37,12 @@ class Coloradmin(admin.ModelAdmin):
 
 @admin.register(Img)
 class Imgadmin(admin.ModelAdmin):
-    pass
+    search_fields = ['product__name']
+    extra = 1
 
 @admin.register(SpecialFeature)
 class SpecialFeatureadmin(admin.ModelAdmin):
-    pass
+    search_fields = ['title', 'detail']
 
 @admin.register(DetailDescription)
 class DetailDescriptionadmin(admin.ModelAdmin):
@@ -48,19 +50,18 @@ class DetailDescriptionadmin(admin.ModelAdmin):
 
 @admin.register(Description)
 class Descriptionadmin(admin.ModelAdmin):
-    pass
+     search_fields = ['title', 'product__name']
 
 @admin.register(SpecificationDetail)
 class SpecificationDetailadmin(admin.ModelAdmin):
-    pass
+    search_fields = ['name', 'detail'] 
 
 @admin.register(Specifications)
 class Specificationsadmin(admin.ModelAdmin):
-    pass
+    search_fields = ['title', 'specification_detail__name']
+    autocomplete_fields = ['specification_detail']
+    list_display = ['title', 'product'] 
 
 @admin.register(ProductDetail)
 class ProductDetailadmin(admin.ModelAdmin):
-    autocomplete_fields = ['product']
-    list_display = ['product', 'title_en', 'code_number']  # فیلدهایی که در لیست نمایش داده شوند
-    search_fields = ['product__name', 'title_en']  # قابلیت جستجو بر اساس نام محصول و عنوان انگلیسی
-    list_filter = ['product__categories']  # فیلتر بر اساس کتگوری محصول
+    autocomplete_fields = ['special_features', 'descriptions', 'specifications', 'images']
