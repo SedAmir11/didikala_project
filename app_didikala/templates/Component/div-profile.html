@@ -1,0 +1,46 @@
+{% load static %}
+<div class="dt-sl dt-sn border mb-3">
+    <div class="profile-sidebar-header dt-sl">
+        <div class="d-flex align-items-center">
+            <div class="profile-avatar">
+                <img src="
+                {% if profile.profile_picture.url is not None %}
+                {{profile.profile_picture.url}}
+                {% else %}
+                {% static "img/theme/avatar.png" %}
+                {% endif %}
+                " alt="Profile Picture">
+            </div>
+            <div class="profile-header-content mr-3 mt-2">
+                <span class="d-block profile-username">
+                    {{ user.first_name }} {{ user.last_name }}
+                </span>
+                <span class="d-block profile-phone">{{profile.phone_number}}</span>
+            </div>
+        </div>
+        <div class="profile-point mt-3 mb-2 dt-sl">
+            <span class="label-profile-point">امتیاز شما:</span>
+            <span class="float-left value-profile-point">120</span>
+        </div>
+        <div class="profile-link mt-2 dt-sl">
+            <div class="row">
+                <div class="col-6 text-center">
+                    <a href="/password-change">
+                        <i class="mdi mdi-lock-reset"></i>
+                        <span class="d-block">تغییر رمز</span>
+                    </a>
+                </div>
+                <div class="col-6 text-center">
+                    <form action="{% url 'logout' %}" method="post" style="border: none;">
+                        {% csrf_token %}
+                        <button type = "submit" style = "border: none; color: #7b7b7b;
+                        background-color: #fff;">
+                            <i class="mdi mdi-logout-variant"></i>
+                            <span class="d-block">خروج از حساب</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

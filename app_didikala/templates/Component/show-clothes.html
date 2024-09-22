@@ -1,0 +1,36 @@
+<div class="item">
+    <div class="product-card">
+        <div class="product-head">
+            <div class="rating-stars">
+                {% with ''|center:cloth.star as range %}
+                {% for _ in range %}
+                <i class="mdi mdi-star active"></i>
+                {% endfor %}
+                {% endwith %}
+            </div>
+            {% if cloth.discount > 0 %}
+            <div class="discount">
+                <span>%{{cloth.discount}}</span>
+            </div>
+            {% endif %}
+        </div>
+        <a class="product-thumb" href="{% url 'product_page' cloth.id %}">
+            <img src="{{ cloth.image.url }}" alt="Product Thumbnail">
+        </a>
+        <div class="product-card-body">
+            <h5 class="product-title">
+                <a href="shop-single.html">{{ cloth.name }}</a>
+            </h5>
+            <a class="product-meta" href="shop-categories.html">
+                {% for category in cloth.categories.all %}
+                {{category.name}}
+                {% if not forloop.last %}
+                ,
+                {% endif %}
+                {% endfor %}
+
+            </a>
+            <span class="product-price">{{ cloth.formatted_price }} تومان</span>
+        </div>
+    </div>
+</div>

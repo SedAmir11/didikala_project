@@ -1,0 +1,71 @@
+{% load static %}
+<div class="px-3">
+    <div
+        class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2">
+        <h2>اطلاعات شخصی</h2>
+    </div>
+    <div class="profile-section dt-sl">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>نام و نام خانوادگی:</span>
+                </div>
+                <div class="value-info">
+                    <span>
+                        {{ user.first_name }} {{ user.last_name }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>پست الکترونیک:</span>
+                </div>
+                <div class="value-info">
+                    <span>{{user.email}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>شماره تلفن همراه:</span>
+                </div>
+                <div class="value-info">
+                    <span>{{profile.phone_number}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>کد ملی:</span>
+                </div>
+                <div class="value-info">
+                    <span>{{profile.national_id}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>دریافت خبرنامه:</span>
+                </div>
+                <div class="value-info">
+                    <span>{% if profile.is_Subscription == True %}
+                        بله
+                        {% else %}
+                        خیر
+                        {% endif %}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="label-info">
+                    <span>شماره کارت:</span>
+                </div>
+                <div class="value-info">
+                    <span>{{profile.card_no}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="profile-section-link">
+            <a href="/profile-additional-info" class="border-bottom-dt">
+                <i class="mdi mdi-account-edit-outline"></i>
+                ویرایش اطلاعات شخصی
+            </a>
+        </div>
+    </div>
+</div>
