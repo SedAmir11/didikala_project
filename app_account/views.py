@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
-from django.contrib.auth import login as auth_login , authenticate
-from app_account.forms import signupForm , additional_info , UserUpdateForm
+from django.contrib.auth import login as auth_login , authenticate , update_session_auth_hash
+from app_account.forms import signupForm , additional_info , UserUpdateForm , ChangePasswordForm
 from app_didikala import views as app_views
 from .models import UserProfile
 from django.core.exceptions import ObjectDoesNotExist
@@ -35,7 +35,6 @@ def profile(request):
         UserProfile.objects.create(user = request.user)
 
     user_profile = UserProfile.objects.get(user = request.user)
-    print(user_profile.profile_picture.url)
     context['profile'] = user_profile
     return render(request , 'profile.html' , context)
 
@@ -50,6 +49,12 @@ def additional_info_profile(request):
     phone_number = request.POST.get('phone_number')
     national_id = request.POST.get('national_id')
     card_no = request.POST.get('card_no')
+    
+    post = request.POST.copy() # to make it mutable
+    if request.POST.get('is_Subscription') is not None:
+        post['is_Subscription'] = True
+        request.POST = post
+
 
     try:
         additional_info(request.user.userprofile)
@@ -78,6 +83,16 @@ def personal_info_profile(request):
         UserProfile.objects.create(user = request.user)
 
     user_profile = UserProfile.objects.get(user = request.user)
-    print(user_profile.profile_picture.url)
     context['profile'] = user_profile
     return render(request , "profile-personal-info.html" , context)
+
+def change_password(request):
+    if request.method == "POST":
+        form = ChangePasswordForm(request.user , request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request , user)
+            return redirect(profile)
+    else:
+        form = ChangePasswordForm(request.user)
+    return render(request , 'password-change.html' , {'form' : form})

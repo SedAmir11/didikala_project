@@ -19,12 +19,11 @@ from . import views
 
 urlpatterns = [
     path('login/' , views.login), 
-    path('login/register/login' , views.login), 
-    path('login/register/register' , views.register), 
-    path('login/register/' , views.register),
+    path('register/' , views.register), 
     path('profile/' , views.profile),
     path('welcome/' , views.welcome),
     path('profile-additional-info/' , views.additional_info_profile),
     path('profile-personal-info/' , views.personal_info_profile),
+    path('password-change/' , views.change_password),
     path("", include("django.contrib.auth.urls")), 
 ]
