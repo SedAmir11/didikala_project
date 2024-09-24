@@ -21,8 +21,6 @@ urlpatterns = [
     path('' , views.index),
     path('NotFound/' , views.notfoundpage),
     path('blog/' , views.blog),
-    path('cart/' , views.cart),
-    path('cart-empty/' , views.cart_empty),
     path('cart-empty-next-list/' , views.cart_empty_next_list),
     path('homepage/' , views.index2),
     path('page-faq/' , views.page_faq),

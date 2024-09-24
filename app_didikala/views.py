@@ -16,11 +16,6 @@ def notfoundpage(request):
 def blog(request):
     return render(request , 'blog.html')
 
-def cart(request):
-    return render(request , 'cart.html')
-
-def cart_empty(request):
-    return render(request , 'cart-empty.html')
 
 def cart_empty_next_list(request):
     return render(request , 'cart-empty-next-list.html')
@@ -51,7 +46,7 @@ def product_page(request , id):
     product_detail = get_object_or_404(ProductDetail, product=product)
     return render(request , 'single-product.html' , {'product': product, 
                                                     'product_detail': product_detail,
-                                                    'without_discount' : f"{round(product.price/((product.discount/100)-1)):,}",
+                                                    'without_discount' : f"{round(product.price/(1-(product.discount/100))):,}",
                                                     'discount_price' : f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"})
 
 def notavailable_product(request):
