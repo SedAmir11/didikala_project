@@ -1,5 +1,5 @@
 from django.shortcuts import render , get_object_or_404
-from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail , division
+from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail 
 
 def index(request):
     categories = Category.objects.filter(division_id = 1)
@@ -51,8 +51,8 @@ def product_page(request , id):
     product_detail = get_object_or_404(ProductDetail, product=product)
     return render(request , 'single-product.html' , {'product': product, 
                                                     'product_detail': product_detail,
-                                                    'without_discount' : f"{round(((product.price*100)/product.discount)):,}",
-                                                    'discount_price' : f"{round(((product.price*100)/product.discount) - product.price):,}"})
+                                                    'without_discount' : f"{round(product.price/((product.discount/100)-1)):,}",
+                                                    'discount_price' : f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"})
 
 def notavailable_product(request):
     return render(request , 'single-product-not-available.html')

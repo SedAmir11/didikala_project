@@ -437,7 +437,7 @@
                                     </div>
                                     {% endif %}
                                 </div>
-                                <a class="product-thumb" href="shop-single.html">
+                                <a class="product-thumb" href="{% url 'product_page' digital.id %}">
                                     <img src="{{ digital.image.url }}" alt="Product Thumbnail" class = 'productimage'>
                                 </a>
                                 <div class="product-card-body">
