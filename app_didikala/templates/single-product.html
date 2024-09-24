@@ -87,18 +87,17 @@
                                         {% else %}
                                         display: none;
                                         {% endif %}">
-                                            <div
-                                                class="section-title text-sm-title title-wide no-after-title-wide mb-0">
-                                                <h2>انتخاب رنگ:</h2>
-                                            </div>
+                                        <div class="section-title text-sm-title title-wide no-after-title-wide mb-0">
+                                            <h2>انتخاب رنگ:</h2>
+                                        </div>
+                                        <form method="POST" action="{% url 'add_to_basket' product_detail.product.id %}">
+                                            {% csrf_token %}
                                             <ul class="product-variants float-right ml-3">
                                                 {% for color in product_detail.colors.all %}
                                                 <li class="ui-variant">
                                                     <label class="ui-variant ui-variant--color">
-                                                        <span class="ui-variant-shape"
-                                                            style="background-color: {{color.color_code}}"></span>
-                                                        <input type="radio" value="1" name="color"
-                                                            class="variant-selector" checked>
+                                                        <span class="ui-variant-shape" style="background-color: {{color.color_code}}"></span>
+                                                        <input type="radio" value="{{ color.id }}" name="color" class="variant-selector" {% if forloop.first %}checked{% endif %}>
                                                         <span class="ui-variant--check">{{color.color_name}}</span>
                                                     </label>
                                                 </li>
@@ -311,9 +310,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-seller-row product-seller-row--add-to-cart">
-                                                    <a href="#" class="btn-add-to-cart btn-add-to-cart--full-width">
-                                                        <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
-                                                    </a>
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn-add-to-cart btn-add-to-cart--full-width">
+                                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
+                                                        </button>
+                                                    </form>
                                                     <div class="product-seller-digiclub">
                                                         <img src="{% static "img/digiclub.png" %}" alt="">
                                                         <div>
