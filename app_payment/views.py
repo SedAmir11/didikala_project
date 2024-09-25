@@ -42,3 +42,21 @@ def view_basket(request):
                                         'total_price_without_discount' : total_price_without_discount,
                                         'total_discount_price' : total_discount_price})
 
+def remove_from_cart(request, item_id):
+    item = get_object_or_404(BasketItem, id=item_id)
+    item.delete()
+    return redirect('cart')
+
+def update_item_count(request, item_id, action):
+    item = BasketItem.objects.get(id=item_id)
+
+    if action == 'plus':
+        item.count += 1
+    elif action == 'minus' and item.count > 1:
+        item.count -= 1
+    
+    item.save()
+
+    return redirect('cart') 
+
+

@@ -78,15 +78,17 @@
                                                                             <div class="item-quantity">
                                                                                 <div class="num-block">
                                                                                     <div class="num-in">
-                                                                                        <span class="plus"></span>
+                                                                                        <a href="{% url 'update_item_count' item.id 'plus' %}" class="plus" style="font-size: 18px;">+</a>
                                                                                         <input type="text" class="in-num" value="{{ item.count }}" readonly>
-                                                                                        <span class="minus dis"></span>
+                                                                                        <a href="{% url 'update_item_count' item.id 'minus' %}" class="minus" style="font-size: 18px; color: red;">-</a>
                                                                                     </div>
                                                                                 </div>
-                                                                                <button class="item-remove-btn mr-3">
-                                                                                    <i class="far fa-trash-alt"></i>
-                                                                                    حذف
-                                                                                </button>
+                                                                                <a href="{% url 'remove_from_cart' item.id %}" class="item-remove-btn mr-3" >
+                                                                                    <button class="item-remove-btn mr-3">
+                                                                                        <i class="far fa-trash-alt"></i>
+                                                                                        حذف
+                                                                                    </button>
+                                                                                </a>
                                                                             </div>
                                                                             <div class="item-price">
                                                                                 {{ item.product.price|multiply:item.count|intcomma }}<span class="text-sm mr-1">تومان</span>
