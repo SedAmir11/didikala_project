@@ -9213,4 +9213,7 @@ footer.mini-footer .copy-right-mini-footer {
     width: 180.8px !important;
 }
 
+.add-favorites.added i {
+    color: red;  
+}
 /* responsive */

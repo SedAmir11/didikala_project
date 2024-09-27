@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType 
 
+user = get_user_model()
+
 class Brand(models.Model):
     name = models.CharField(max_length=255 , null=True)
 
@@ -129,3 +131,9 @@ class ProductDetail(models.Model):
         return self.title_en
     
     
+class Favorite(models.Model):
+    user = models.ForeignKey(user, on_delete=models.CASCADE, related_name='favorites')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"

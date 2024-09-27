@@ -33,9 +33,9 @@ urlpatterns = [
     path('single-product-not-available/' , views.notavailable_product), 
     path('product-comment/' , views.comment_page), 
     path('product-comparison/' , views.comparison_page), 
-    path('profile-additional-info/' , views.additional_info), 
     path('profile-addresses/' , views.profile_addresses), 
     path('profile-comments/' , views.profile_comments), 
-    path('profile-favorites/' , views.profile_favorites), 
+    path('add_remove_favorite/<int:product_id>/', views.add_remove_favorite, name='add_remove_favorite'),
     path('profile-order-details/' , views.profile_order_details), 
+    path('profile-favorites/', views.profile_favorites, name='profile_favorites'),
 ]

@@ -1,5 +1,7 @@
-from django.shortcuts import render , get_object_or_404
-from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail 
+from django.shortcuts import render , get_object_or_404 , redirect
+from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail , Favorite
+from django.contrib.auth.decorators import login_required
+from app_account.models import UserProfile
 
 def index(request):
     categories = Category.objects.filter(division_id = 1)
@@ -44,10 +46,12 @@ def single_blog(request):
 def product_page(request , id):
     product = get_object_or_404(Product, id=id)
     product_detail = get_object_or_404(ProductDetail, product=product)
+    is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
     return render(request , 'single-product.html' , {'product': product, 
                                                     'product_detail': product_detail,
                                                     'without_discount' : f"{round(product.price/(1-(product.discount/100))):,}",
-                                                    'discount_price' : f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"})
+                                                    'discount_price' : f"{round((product.price/(1 - (product.discount/100))) - product.price):,}",
+                                                    'is_favorite': is_favorite})
 
 def notavailable_product(request):
     return render(request , 'single-product-not-available.html')
@@ -58,17 +62,35 @@ def comment_page(request):
 def comparison_page(request):
     return render(request , 'product-comparison.html')
 
-def additional_info(request):
-    return render(request , 'profile-additional-info.html')
-
 def profile_addresses(request):
     return render(request , 'profile-addresses.html')
 
 def profile_comments(request):
     return render(request , 'profile-comments.html')
 
-def profile_favorites(request):
-    return render(request , 'profile-favorites.html')
+@login_required
+def add_remove_favorite(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
+
+    if not created:
+        favorite.delete()
+    
+    return redirect(product_page, id=product_id)
 
 def profile_order_details(request):
     return render(request , 'profile-order-details.html')
+
+def profile_favorites(request):
+    context = {}
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    favorites = Favorite.objects.filter(user=request.user)
+    context['favorites'] = favorites
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    user_profile = UserProfile.objects.get(user = request.user)
+    context['profile'] = user_profile
+
+    return render(request, 'profile-favorites.html', context)

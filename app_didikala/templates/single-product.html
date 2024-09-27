@@ -31,8 +31,16 @@
                             <!-- Product Options-->
                             <ul class="gallery-options">
                                 <li>
-                                    <button class="add-favorites"><i class="mdi mdi-heart"></i></button>
-                                    <span class="tooltip-option">افزودن به علاقمندی</span>
+                                    <form action="{% url 'add_remove_favorite' product.id %}" method="POST">
+                                        {% csrf_token %}
+                                        {% if is_favorite %}
+                                            <button class="add-favorites added"><i class="mdi mdi-heart"></i></button>
+                                            <span class="tooltip-option">حذف از علاقمندی</span>
+                                        {% else %}
+                                            <button class="add-favorites"><i class="mdi mdi-heart-outline"></i></button>
+                                            <span class="tooltip-option">افزودن به علاقمندی</span>
+                                        {% endif %}
+                                    </form>
                                 </li>
                             </ul>
                             <div class="product-timeout position-relative pt-5 mb-3">

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
-from app_didikala.models import Brand,division ,Product ,banner ,image , Category, Color, Img, SpecialFeature, DetailDescription, Description, SpecificationDetail, Specifications, ProductDetail
+from app_didikala.models import Brand,division ,Product ,banner ,image , Category, Color, Img, SpecialFeature, DetailDescription, Description, SpecificationDetail, Specifications, ProductDetail, Favorite
 
 class imageInline(GenericStackedInline):
     model = image
@@ -16,7 +16,6 @@ class divisionAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ['brand']
-
     search_fields = ['name']
 
 @admin.register(banner)
@@ -37,7 +36,7 @@ class Coloradmin(admin.ModelAdmin):
 
 @admin.register(Img)
 class Imgadmin(admin.ModelAdmin):
-    search_fields = ['product__name']
+    search_fields = ['product__name', 'image']
     extra = 1
 
 @admin.register(SpecialFeature)
@@ -46,11 +45,12 @@ class SpecialFeatureadmin(admin.ModelAdmin):
 
 @admin.register(DetailDescription)
 class DetailDescriptionadmin(admin.ModelAdmin):
-    pass
+    search_fields = ['image']
 
 @admin.register(Description)
 class Descriptionadmin(admin.ModelAdmin):
-     search_fields = ['title', 'product__name']
+    search_fields = ['title', 'product__name']
+    autocomplete_fields = ['product']
 
 @admin.register(SpecificationDetail)
 class SpecificationDetailadmin(admin.ModelAdmin):
@@ -64,4 +64,8 @@ class Specificationsadmin(admin.ModelAdmin):
 
 @admin.register(ProductDetail)
 class ProductDetailadmin(admin.ModelAdmin):
-    autocomplete_fields = ['special_features', 'descriptions', 'specifications', 'images']
+    autocomplete_fields = ['special_features', 'descriptions', 'specifications', 'images', 'product']
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product')
