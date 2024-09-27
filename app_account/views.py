@@ -3,7 +3,6 @@ from django.contrib.auth import login as auth_login , authenticate , update_sess
 from app_account.forms import signupForm , additional_info , UserUpdateForm , ChangePasswordForm
 from app_didikala import views as app_views
 from .models import UserProfile
-from django.core.exceptions import ObjectDoesNotExist
 
 def register(request):
     context = {}
@@ -29,12 +28,7 @@ def login(request):
 
 def profile(request):
     context = {}
-    try:
-        additional_info(request.user.userprofile)
-    except ObjectDoesNotExist:
-        UserProfile.objects.create(user = request.user)
-
-    user_profile = UserProfile.objects.get(user = request.user)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     context['profile'] = user_profile
     return render(request , 'profile.html' , context)
 
@@ -54,12 +48,7 @@ def additional_info_profile(request):
     if request.POST.get('is_Subscription') is not None:
         post['is_Subscription'] = True
         request.POST = post
-    try:
-        additional_info(request.user.userprofile)
-    except ObjectDoesNotExist:
-        UserProfile.objects.create(user = request.user)
-
-    user_profile = UserProfile.objects.get(user = request.user)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     context['profile'] = user_profile
 
     if request.method == 'POST':
@@ -75,10 +64,7 @@ def additional_info_profile(request):
 
 def personal_info_profile(request):
     context = {}
-    try:
-        additional_info(request.user.userprofile)
-    except ObjectDoesNotExist:
-        UserProfile.objects.create(user = request.user)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     user_profile = UserProfile.objects.get(user = request.user)
     context['profile'] = user_profile
