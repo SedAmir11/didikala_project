@@ -60,3 +60,19 @@ def update_item_count(request, item_id, action):
     return redirect('cart') 
 
 
+def shopping_payement(request):
+    basket, created = Basket.objects.get_or_create(user=request.user)
+    items = BasketItem.objects.filter(basket=basket)
+
+    if not items.exists():
+        return render(request, 'cart-empty.html')
+    
+    total_price = sum(item.product.price * item.count for item in items)
+    total_price_without_discount = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
+    total_discount_price = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
+    
+
+    return render(request, 'shopping-peyment.html', {'items': items,
+                                        'total_price': total_price,
+                                        'total_price_without_discount' : total_price_without_discount,
+                                        'total_discount_price' : total_discount_price})
