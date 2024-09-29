@@ -37,6 +37,7 @@ class Coloradmin(admin.ModelAdmin):
 @admin.register(Img)
 class Imgadmin(admin.ModelAdmin):
     search_fields = ['product__name', 'image']
+    autocomplete_fields = ['product']
     extra = 1
 
 @admin.register(SpecialFeature)
@@ -45,12 +46,12 @@ class SpecialFeatureadmin(admin.ModelAdmin):
 
 @admin.register(DetailDescription)
 class DetailDescriptionadmin(admin.ModelAdmin):
-    search_fields = ['image']
+    search_fields = ['image' , 'detail']
 
 @admin.register(Description)
 class Descriptionadmin(admin.ModelAdmin):
     search_fields = ['title', 'product__name']
-    autocomplete_fields = ['product']
+    autocomplete_fields = ['product' , 'description_detail']
 
 @admin.register(SpecificationDetail)
 class SpecificationDetailadmin(admin.ModelAdmin):
@@ -59,7 +60,7 @@ class SpecificationDetailadmin(admin.ModelAdmin):
 @admin.register(Specifications)
 class Specificationsadmin(admin.ModelAdmin):
     search_fields = ['title', 'specification_detail__name']
-    autocomplete_fields = ['specification_detail']
+    autocomplete_fields = ['specification_detail' , 'product']
     list_display = ['title', 'product'] 
 
 @admin.register(ProductDetail)
