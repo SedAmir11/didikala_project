@@ -46,7 +46,10 @@ def single_blog(request):
 def product_page(request , id):
     product = get_object_or_404(Product, id=id)
     product_detail = get_object_or_404(ProductDetail, product=product)
-    is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
+    if request.user.is_authenticated:
+        is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
+    else:
+        is_favorite = False
     return render(request , 'single-product.html' , {'product': product, 
                                                     'product_detail': product_detail,
                                                     'without_discount' : f"{round(product.price/(1-(product.discount/100))):,}",
