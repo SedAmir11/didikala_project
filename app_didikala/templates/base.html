@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#f7858d">
     <meta name="msapplication-navbutton-color" content="#f7858d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
-    <title>didikala | Index Page</title>
+    <title>didikala | Page</title>
     <!-- Font Icon -->
     <link rel="stylesheet" href="{% static "css/vendor/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static "css/vendor/materialdesignicons.min.css" %}">
@@ -89,6 +89,9 @@
     <script src="{% static "js/vendor/theia-sticky-sidebar.min.js" %}"></script>
     <!-- Main JS File -->
     <script src="{% static "js/main.js" %}"></script>
+    {% block extra_js %}
+        
+    {% endblock extra_js %}
 </body>
 
 </html>
