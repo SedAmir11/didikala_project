@@ -76,3 +76,12 @@ def shopping_payement(request):
                                         'total_price': total_price,
                                         'total_price_without_discount' : total_price_without_discount,
                                         'total_discount_price' : total_discount_price})
+
+def shopping_completed(request):
+    return render(request , 'shopping-complete-buy.html')
+
+def shopping(request):
+    return render(request , 'shopping.html')
+
+def shopping_notcompleted(request):
+    return render(request , 'shopping-no-complete-buy.html')
