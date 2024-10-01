@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model 
 from django.contrib.auth.forms import UserCreationForm  , PasswordChangeForm
-from app_account.models import UserProfile
+from app_account.models import UserProfile , Address
 
 User = get_user_model()
 
@@ -31,3 +31,8 @@ class ChangePasswordForm(PasswordChangeForm):
     old_password = forms.CharField(widget=forms.PasswordInput)
     new_password1 = forms.CharField(widget=forms.PasswordInput)
     new_password2 = forms.CharField(widget=forms.PasswordInput)
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['full_name', 'phone_number', 'state', 'city', 'postal_code', 'description']
