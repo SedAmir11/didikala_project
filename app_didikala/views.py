@@ -44,29 +44,29 @@ def single_blog(request):
     return render(request , 'single-blog.html')
 
 def product_page(request , id):
+    context = {}
     product = get_object_or_404(Product, id=id)
     product_detail = get_object_or_404(ProductDetail, product=product)
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
     else:
         is_favorite = False
-    return render(request , 'single-product.html' , {'product': product, 
-                                                    'product_detail': product_detail,
-                                                    'without_discount' : f"{round(product.price/(1-(product.discount/100))):,}",
-                                                    'discount_price' : f"{round((product.price/(1 - (product.discount/100))) - product.price):,}",
-                                                    'is_favorite': is_favorite})
+    context['product'] = product
+    context['product_detail']= product_detail
+    context['without_discount' ]= f"{round(product.price/(1-(product.discount/100))):,}"
+    context['discount_price' ]= f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"
+    context['is_favorite']= is_favorite
 
-def notavailable_product(request):
-    return render(request , 'single-product-not-available.html')
+    if product.count > 0:
+        return render(request , 'single-product.html' , context)
+    else:
+        return render(request , 'single-product-not-available.html' , context)
 
 def comment_page(request):
     return render(request , 'product-comment.html')
 
 def comparison_page(request):
     return render(request , 'product-comparison.html')
-
-def profile_addresses(request):
-    return render(request , 'profile-addresses.html')
 
 def profile_comments(request):
     return render(request , 'profile-comments.html')
