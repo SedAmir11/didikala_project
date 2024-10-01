@@ -1,8 +1,10 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import login as auth_login , authenticate , update_session_auth_hash
-from app_account.forms import signupForm , additional_info , UserUpdateForm , ChangePasswordForm
+from app_account.forms import signupForm , additional_info , UserUpdateForm , ChangePasswordForm , AddressForm
 from app_didikala import views as app_views
-from .models import UserProfile
+from .models import UserProfile , Address
+from django.contrib.auth.decorators import login_required
+
 
 def register(request):
     context = {}
@@ -26,6 +28,7 @@ def login(request):
         return redirect(app_views.index)
     return render(request , 'login.html')
 
+@login_required
 def profile(request):
     context = {}
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -35,6 +38,7 @@ def profile(request):
 def welcome(request):
     return render(request , 'welcome.html')
 
+@login_required
 def additional_info_profile(request):
     context = {}
     first_name = request.POST.get('first_name')
@@ -62,6 +66,7 @@ def additional_info_profile(request):
         
     return render(request , 'profile-additional-info.html' , context)
 
+@login_required
 def personal_info_profile(request):
     context = {}
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -70,6 +75,7 @@ def personal_info_profile(request):
     context['profile'] = user_profile
     return render(request , "profile-personal-info.html" , context)
 
+@login_required
 def change_password(request):
     if request.method == "POST":
         form = ChangePasswordForm(request.user , request.POST)
@@ -80,3 +86,25 @@ def change_password(request):
     else:
         form = ChangePasswordForm(request.user)
     return render(request , 'password-change.html' , {'form' : form})
+
+@login_required
+def profile_addresses(request):
+    context = {}
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    context['profile'] = user_profile
+    user_addresses = Address.objects.filter(user=request.user)
+    context['addresses'] = user_addresses
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        import pdb;pdb.set_trace()
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+        else:
+            form = AddressForm()
+    else:
+        form = AddressForm()  
+    context['form'] = form
+
+    return render(request , 'profile-addresses.html' , context)
