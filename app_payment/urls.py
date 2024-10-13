@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path , include
 from app_payment import views
 
 
@@ -28,4 +28,5 @@ urlpatterns = [
     path('shopping-no-complete-buy/', views.shopping_notcompleted),
     path('shopping/', views.shopping),
     path('finalize-order/', views.finalize_order, name='finalize_order'),
+    path('', include('app_payment.api.urls')),  
 ]

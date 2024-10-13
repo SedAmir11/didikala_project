@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path , include
 from app_didikala import views
 
 urlpatterns = [
@@ -36,4 +36,5 @@ urlpatterns = [
     path('profile-order-details/' , views.profile_order_details), 
     path('profile-favorites/', views.profile_favorites, name='profile_favorites'),
     path('search/', views.product_search, name='product_search'),
+    path('', include('app_didikala.api.urls')),  
 ]
