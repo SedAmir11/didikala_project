@@ -18,7 +18,7 @@ from django.urls import path
 from app_didikala import views
 
 urlpatterns = [
-    path('' , views.index),
+    path('' , views.index , name = 'home'),
     path('NotFound/' , views.notfoundpage),
     path('blog/' , views.blog),
     path('cart-empty-next-list/' , views.cart_empty_next_list),
@@ -30,10 +30,10 @@ urlpatterns = [
     path('page-privacy/' , views.page_privacy),
     path('single-blog/' , views.single_blog),
     path('single-product/<int:id>/details/' , views.product_page , name='product_page'),
-    path('product-comment/' , views.comment_page), 
     path('product-comparison/' , views.comparison_page), 
     path('profile-comments/' , views.profile_comments), 
     path('add_remove_favorite/<int:product_id>/', views.add_remove_favorite, name='add_remove_favorite'),
     path('profile-order-details/' , views.profile_order_details), 
     path('profile-favorites/', views.profile_favorites, name='profile_favorites'),
+    path('search/', views.product_search, name='product_search'),
 ]
