@@ -1,18 +1,18 @@
 from django.contrib import admin
-from app_social.models import point, is_Useful, comment, image
+from app_social.models import Comment , Advantage , Disadvantage , image
 
 
 
-@admin.register(point)
-class pointAdmin(admin.ModelAdmin):
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(is_Useful)
-class is_Usefuln(admin.ModelAdmin):
+@admin.register(Advantage)
+class AdvantageAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(comment)
-class commentmin(admin.ModelAdmin):
+@admin.register(Disadvantage)
+class DisadvantageAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(image)
