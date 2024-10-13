@@ -25,6 +25,7 @@ urlpatterns = [
     path('profile-additional-info/' , views.additional_info_profile),
     path('profile-personal-info/' , views.personal_info_profile),
     path('password-change/' , views.change_password),
-    path('profile-addresses/' , views.profile_addresses), 
+    path('profile-addresses/' , views.profile_addresses ,  name='profile_addresses'),
+    path('delete-address/<int:address_id>/', views.delete_address, name='delete_address'),
     path("", include("django.contrib.auth.urls")),
 ]

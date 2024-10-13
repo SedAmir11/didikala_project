@@ -132,6 +132,24 @@
                                                 </div>
                                             </div>
                                         </div>
+                                                <!-- Start Modal remove-location -->
+                                                <div class="modal fade" id="remove-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title mb-3" id="exampleModalLabel">آیا مطمئنید که این آدرس حذف شود؟</h5>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="remodal-general-alert-button remodal-general-alert-button--cancel" data-dismiss="modal">خیر</button>
+                                                                <form method="post" action="{% url 'delete_address' address.id %}">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit" class="remodal-general-alert-button remodal-general-alert-button--approve">بله</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Modal remove-location -->
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -626,25 +644,6 @@
             </div>
         </div>
         <!-- End Modal location edit -->
-        <!-- Start Modal remove-location -->
-        <div class="modal fade" id="remove-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title mb-3" id="exampleModalLabel">آیا مطمئنید که
-                            این آدرس حذف شود؟</h5>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="remodal-general-alert-button remodal-general-alert-button--cancel"
-                            data-dismiss="modal">خیر</button>
-                        <button type="button"
-                            class="remodal-general-alert-button remodal-general-alert-button--approve">بله</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Modal remove-location -->
         {% endblock location %}
     </div>
     <!-- google map js -->

@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth import login as auth_login , authenticate , update_session_auth_hash
 from app_account.forms import signupForm , additional_info , UserUpdateForm , ChangePasswordForm , AddressForm
 from app_didikala import views as app_views
@@ -96,7 +96,6 @@ def profile_addresses(request):
     context['addresses'] = user_addresses
     if request.method == "POST":
         form = AddressForm(request.POST)
-        import pdb;pdb.set_trace()
         if form.is_valid():
             address = form.save(commit=False)
             address.user = request.user
@@ -108,3 +107,9 @@ def profile_addresses(request):
     context['form'] = form
 
     return render(request , 'profile-addresses.html' , context)
+
+@login_required
+def delete_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    address.delete()
+    return redirect('profile_addresses')
