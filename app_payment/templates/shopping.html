@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load humanize %}
 <body>
     <div class="wrapper shopping-page">
         <!-- Start header-shopping -->
@@ -55,25 +55,24 @@
                                         <ul class="checkout-contact-items">
                                             <li class="checkout-contact-item">
                                                 گیرنده:
-                                                <span class="full-name">جلال بهرامی راد</span>
-                                                <a class="checkout-contact-btn-edit">اصلاح این آدرس</a>
+                                                <span class="full-name">{{ default_address.full_name }}</span>
                                             </li>
                                             <li class="checkout-contact-item">
                                                 <div class="checkout-contact-item checkout-contact-item-mobile">
                                                     شماره تماس:
-                                                    <span class="mobile-phone">09xxxxxxxxx</span>
+                                                    <span class="mobile-phone">{{default_address.phone_number}}</span>
                                                 </div>
                                                 <div class="checkout-contact-item-message">
                                                     کد پستی:
-                                                    <span class="post-code">۹۹۹۹۹۹۹۹۹۹</span>
+                                                    <span class="post-code">{{default_address.postal_code}}</span>
                                                 </div>
                                                 <br>
                                                 استان
-                                                <span class="state">خراسان شمالی</span>
+                                                <span class="state">{{ default_address.state }}</span>
                                                 ، ‌شهر
-                                                <span class="city">بجنورد</span>
+                                                <span class="city">{{default_address.city}}</span>
                                                 ،
-                                                <span class="address-part">خراسان شمالی-بجنورد</span>
+                                                <span class="address-part">{{default_address.description}}</span>
                                             </li>
                                         </ul>
                                         <a class="checkout-contact-location" id="btn-checkout-contact-location">تغییر
@@ -530,98 +529,21 @@
                                         <!-- Start Product-Slider -->
                                         <div class="col-12">
                                             <div class="products-compact-slider carousel-md owl-carousel owl-theme">
+                                                {% for item in items %}
                                                 <div class="item">
                                                     <div class="product-card mb-3">
                                                         <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/07.jpg" %}"
+                                                            <img src="{{item.product.image.url}}"
                                                                 alt="Product Thumbnail">
                                                         </a>
                                                         <div class="product-card-body">
                                                             <h5 class="product-title">
-                                                                <a href="shop-single.html">مانتو زنانه</a>
+                                                                <a href="shop-single.html">{{item.product.name}}</a>
                                                             </h5>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/017.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">کت مردانه</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/013.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">مانتو زنانه مدل هودی تیک
-                                                                    تین</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/09.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">مانتو زنانه</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/010.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">مانتو زنانه</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/011.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">مانتو زنانه</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item">
-                                                    <div class="product-card mb-3">
-                                                        <a class="product-thumb" href="shop-single.html">
-                                                            <img src="{% static "img/products/019.jpg" %}"
-                                                                alt="Product Thumbnail">
-                                                        </a>
-                                                        <div class="product-card-body">
-                                                            <h5 class="product-title">
-                                                                <a href="shop-single.html">تیشرت مردانه</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                         <!-- End Product-Slider -->
@@ -786,10 +708,10 @@
                         <div class="dt-sn dt-sn--box border mb-2">
                             <ul class="checkout-summary-summary">
                                 <li>
-                                    <span>مبلغ کل (۲ کالا)</span><span>۱۶,۸۹۷,۰۰۰ تومان</span>
+                                    <span>مبلغ کل ({{items|length}} کالا)</span><span>{{total_price_without_discount | intcomma}} تومان</span>
                                 </li>
                                 <li class="checkout-summary-discount">
-                                    <span>سود شما از خرید</span><span><span>(۱٪)</span>۲۰۰,۰۰۰
+                                    <span>سود شما از خرید</span><span><span>(۱٪)</span>{{total_discount_price | intcomma}}
                                         تومان</span>
                                 </li>
                                 <li>
@@ -813,10 +735,10 @@
                             <div class="checkout-summary-content">
                                 <div class="checkout-summary-price-title">مبلغ قابل پرداخت:</div>
                                 <div class="checkout-summary-price-value">
-                                    <span class="checkout-summary-price-value-amount">۱۶,۶۹۷,۰۰۰</span>
+                                    <span class="checkout-summary-price-value-amount">{{total_price | intcomma}}</span>
                                     تومان
                                 </div>
-                                <a href="#" class="mb-2 d-block">
+                                <a href="/shopping-payement" class="mb-2 d-block">
                                     <button class="btn-primary-cm btn-with-icon w-100 text-center pr-0 pl-0">
                                         <i class="mdi mdi-arrow-left"></i>
                                         تایید و ادامه ثبت سفارش

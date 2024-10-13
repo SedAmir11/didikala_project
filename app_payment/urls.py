@@ -27,4 +27,5 @@ urlpatterns = [
     path('shopping-complete-buy/', views.shopping_completed),
     path('shopping-no-complete-buy/', views.shopping_notcompleted),
     path('shopping/', views.shopping),
+    path('finalize-order/', views.finalize_order, name='finalize_order'),
 ]

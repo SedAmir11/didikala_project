@@ -78,7 +78,7 @@
                                                                             <div class="item-quantity">
                                                                                 <div class="num-block">
                                                                                     <div class="num-in">
-                                                                                        <a href="{% url 'update_item_count' item.id 'plus' %}" class="plus" style="font-size: 18px;">+</a>
+                                                                                        <a href="{% if item.product.count > item.count %}{% url 'update_item_count' item.id 'plus' %}{% endif %}" class="plus" style="font-size: 18px; {% if item.product.count <= item.count %}pointer-events: none; color: gray;{% endif %}">+</a>
                                                                                         <input type="text" class="in-num" value="{{ item.count }}" readonly>
                                                                                         <a href="{% url 'update_item_count' item.id 'minus' %}" class="minus" style="font-size: 18px; color: red;">-</a>
                                                                                     </div>
@@ -139,7 +139,7 @@
                                                     <span class="checkout-summary-price-value-amount">{{ total_price|intcomma }}</span>
                                                     تومان
                                                 </div>
-                                                <a href="/shopping-payement" class="mb-2 d-block">
+                                                <a href="/shopping" class="mb-2 d-block">
                                                     <button class="btn-primary-cm btn-with-icon w-100 text-center pr-0">
                                                         <i class="mdi mdi-arrow-left"></i>
                                                         ادامه ثبت سفارش

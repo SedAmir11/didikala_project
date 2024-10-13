@@ -20,10 +20,13 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True) 
     count = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.count} of {self.product.name}"
+        if self.color:
+            return f"{self.count} of {self.product.name} ({self.color.color_name})"
+        return f"{self.count} of {self.product.name} (No Color)"
 
 class Basket(models.Model):
     user = models.ForeignKey(user, on_delete=models.CASCADE)

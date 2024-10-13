@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect , render
 from django.contrib.auth.decorators import login_required
-from app_payment.models import Basket, BasketItem
-from app_didikala.models import Product , Color
+from app_payment.models import Basket, BasketItem , OrderItem , Order , Transaction
+from app_didikala.models import Product , Color 
+from app_account.models import Address
 
 @login_required
 def add_to_basket(request, product_id):
@@ -26,21 +27,19 @@ def add_to_basket(request, product_id):
 
 @login_required
 def view_basket(request):
+    context = {}
     basket, created = Basket.objects.get_or_create(user=request.user)
     items = BasketItem.objects.filter(basket=basket)
 
     if not items.exists():
         return render(request, 'cart-empty.html')
     
-    total_price = sum(item.product.price * item.count for item in items)
-    total_price_without_discount = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
-    total_discount_price = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
-    
+    context['total_price'] = sum(item.product.price * item.count for item in items)
+    context['total_price_without_discount'] = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
+    context['total_discount_price'] = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
+    context['items'] = items   
 
-    return render(request, 'cart.html', {'items': items,
-                                        'total_price': total_price,
-                                        'total_price_without_discount' : total_price_without_discount,
-                                        'total_discount_price' : total_discount_price})
+    return render(request, 'cart.html', context)
 
 def remove_from_cart(request, item_id):
     item = get_object_or_404(BasketItem, id=item_id)
@@ -61,27 +60,63 @@ def update_item_count(request, item_id, action):
 
 
 def shopping_payement(request):
+    context = {}
     basket, created = Basket.objects.get_or_create(user=request.user)
     items = BasketItem.objects.filter(basket=basket)
 
     if not items.exists():
         return render(request, 'cart-empty.html')
     
-    total_price = sum(item.product.price * item.count for item in items)
-    total_price_without_discount = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
-    total_discount_price = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
-    
+    context['total_price'] = sum(item.product.price * item.count for item in items)
+    context['total_price_without_discount'] = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
+    context['total_discount_price'] = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
+    context['items'] = items
 
-    return render(request, 'shopping-peyment.html', {'items': items,
-                                        'total_price': total_price,
-                                        'total_price_without_discount' : total_price_without_discount,
-                                        'total_discount_price' : total_discount_price})
+    return render(request, 'shopping-peyment.html', context)
 
 def shopping_completed(request):
     return render(request , 'shopping-complete-buy.html')
 
 def shopping(request):
-    return render(request , 'shopping.html')
+    context = {}
+    basket, created = Basket.objects.get_or_create(user=request.user)
+    items = BasketItem.objects.filter(basket=basket)
+
+    context['addresses'] = Address.objects.filter(user=request.user)
+    context['default_address'] = context['addresses'].first() if context['addresses'] else None
+
+    context['total_price'] = sum(item.product.price * item.count for item in items)
+    context['total_price_without_discount'] = sum(round(item.product.price/(1-(item.product.discount/100)))*item.count for item in items)
+    context['total_discount_price'] = sum(round((item.product.price/(1 - (item.product.discount/100))) - item.product.price)*item.count for item in items)
+    context['items'] = items
+
+    return render(request, 'shopping.html', context)
 
 def shopping_notcompleted(request):
     return render(request , 'shopping-no-complete-buy.html')
+
+@login_required
+def finalize_order(request):
+    basket, created = Basket.objects.get_or_create(user=request.user)
+    items = BasketItem.objects.filter(basket=basket)
+
+    total_price = sum(item.product.price * item.count for item in items)
+
+
+    transaction = Transaction.objects.create(
+        status=True, 
+        ref_code="سفارشی-" + str(request.user.id),
+        price=total_price 
+    )
+
+    order = Order.objects.create(user=request.user, transaction=transaction)
+
+    for item in items:
+        OrderItem.objects.create(order=order, product=item.product, count=item.count , color = item.color)
+
+        item.product.count -= item.count 
+        item.product.save()
+
+    basket.items.all().delete()
+
+    return redirect(shopping_completed)
