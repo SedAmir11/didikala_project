@@ -2,6 +2,8 @@ from django.shortcuts import render , get_object_or_404 , redirect
 from app_didikala.models import Brand,division ,Product ,banner ,image , Category , ProductDetail , Favorite
 from django.contrib.auth.decorators import login_required
 from app_account.models import UserProfile
+from app_social.models import Comment
+from django.db.models import Q
 
 def index(request):
     categories = Category.objects.filter(division_id = 1)
@@ -57,13 +59,16 @@ def product_page(request , id):
     context['discount_price' ]= f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"
     context['is_favorite']= is_favorite
 
+    comments = Comment.objects.filter(product=product).prefetch_related('advantages', 'disadvantages')
+    context['comments'] = comments
+    comment_count = Comment.objects.filter(product=product).count()
+    context['comment_count'] = comment_count
+    print(request.POST)
+
     if product.count > 0:
         return render(request , 'single-product.html' , context)
     else:
         return render(request , 'single-product-not-available.html' , context)
-
-def comment_page(request):
-    return render(request , 'product-comment.html')
 
 def comparison_page(request):
     return render(request , 'product-comparison.html')
@@ -97,3 +102,19 @@ def profile_favorites(request):
     context['profile'] = user_profile
 
     return render(request, 'profile-favorites.html', context)
+
+def product_search(request):
+    query = request.GET.get('q') 
+    print("Query:", query) 
+    products = Product.objects.all() 
+    print("Total products before search:", products.count())
+
+    if query:
+        products = products.filter(
+            Q(name__icontains=query) | 
+            Q(brand__name__icontains=query) | 
+            Q(categories__name__icontains=query)
+        ).distinct()
+        print("Total products after search:", products.count())
+
+    return render(request, 'search.html', {'products': products})

@@ -20,29 +20,23 @@
                 </div>
                 <div class="col-lg-6 col-md-5 hidden-sm">
                     <div class="search-area dt-sl">
-                        <form action="" class="search">
-                            <input type="text"
-                                placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                        <form action="{% url 'product_search' %}" method="GET" class="search">
+                            <input type="text" name="q" placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
                             <i class="far fa-search search-icon"></i>
-                            <button class="close-search-result" type="button"><i
-                                    class="mdi mdi-close"></i></button>
+                            <button class="close-search-result" type="button"><i class="mdi mdi-close"></i></button>
+                            
                             <div class="search-result">
                                 <ul>
-                                    <li>
-                                        <a href="#">موبایل</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">مد و پوشاک</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">میکروفن</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">میز تلویزیون</a>
-                                    </li>
+                                    {% for product in products %}
+                                        <li>
+                                            <a href="#">{{ product.name }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>هیچ نتیجه‌ای یافت نشد.</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
                 <div class="col-md-4 col-6 topbar-left">
