@@ -63,7 +63,6 @@ def product_page(request , id):
     context['comments'] = comments
     comment_count = Comment.objects.filter(product=product).count()
     context['comment_count'] = comment_count
-    print(request.POST)
 
     if product.count > 0:
         return render(request , 'single-product.html' , context)
@@ -105,9 +104,7 @@ def profile_favorites(request):
 
 def product_search(request):
     query = request.GET.get('q') 
-    print("Query:", query) 
     products = Product.objects.all() 
-    print("Total products before search:", products.count())
 
     if query:
         products = products.filter(
@@ -115,6 +112,5 @@ def product_search(request):
             Q(brand__name__icontains=query) | 
             Q(categories__name__icontains=query)
         ).distinct()
-        print("Total products after search:", products.count())
 
     return render(request, 'search.html', {'products': products})
