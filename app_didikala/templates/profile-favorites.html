@@ -119,9 +119,12 @@
                                                     </div>
                                                     <div class="card-horizontal-product-buttons">
                                                         <a href="{% url 'product_page' favorite.product.id %}" class="btn">مشاهده محصول</a>
-                                                        <button class="remove-btn">
-                                                            <i class="mdi mdi-trash-can-outline"></i>
-                                                        </button>
+                                                        <form method="POST" action="{% url 'remove_favorite' favorite.product.id %}" style = "display: inline;">
+                                                            {% csrf_token %}
+                                                            <button class="remove-btn" type="submit">
+                                                                <i class="mdi mdi-trash-can-outline"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

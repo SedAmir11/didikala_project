@@ -35,6 +35,7 @@ urlpatterns = [
     path('add_remove_favorite/<int:product_id>/', views.add_remove_favorite, name='add_remove_favorite'),
     path('profile-order-details/' , views.profile_order_details), 
     path('profile-favorites/', views.profile_favorites, name='profile_favorites'),
+    path('favorites/remove/<int:product_id>/', views.remove_favorite, name='remove_favorite'),
     path('search/', views.product_search, name='product_search'),
     path('', include('app_didikala.api.urls')),  
 ]

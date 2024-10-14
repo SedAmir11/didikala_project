@@ -118,3 +118,8 @@ def product_search(request):
         ).distinct()
 
     return render(request, 'search.html', {'products': products})
+
+def remove_favorite(request, product_id):
+    favorite = get_object_or_404(Favorite, user=request.user, product_id=product_id)
+    favorite.delete()
+    return redirect(profile_favorites)
