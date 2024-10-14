@@ -45,19 +45,23 @@ def page_privacy(request):
 def single_blog(request):
     return render(request , 'single-blog.html')
 
-def product_page(request , id):
+def product_page(request, id):
     context = {}
     product = get_object_or_404(Product, id=id)
     product_detail = get_object_or_404(ProductDetail, product=product)
+    related_products = Product.objects.filter(categories__in=product.categories.all()).exclude(id=product.id).distinct()
+
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(user=request.user, product=product).exists()
     else:
         is_favorite = False
+
     context['product'] = product
-    context['product_detail']= product_detail
-    context['without_discount' ]= f"{round(product.price/(1-(product.discount/100))):,}"
-    context['discount_price' ]= f"{round((product.price/(1 - (product.discount/100))) - product.price):,}"
-    context['is_favorite']= is_favorite
+    context['product_detail'] = product_detail
+    context['without_discount'] = f"{round(product.price / (1 - (product.discount / 100))):,}"
+    context['discount_price'] = f"{round((product.price / (1 - (product.discount / 100))) - product.price):,}"
+    context['is_favorite'] = is_favorite
+    context['related_products'] = related_products
 
     comments = Comment.objects.filter(product=product).prefetch_related('advantages', 'disadvantages')
     context['comments'] = comments
@@ -65,9 +69,9 @@ def product_page(request , id):
     context['comment_count'] = comment_count
 
     if product.count > 0:
-        return render(request , 'single-product.html' , context)
+        return render(request, 'single-product.html', context)
     else:
-        return render(request , 'single-product-not-available.html' , context)
+        return render(request, 'single-product-not-available.html', context)
 
 def comparison_page(request):
     return render(request , 'product-comparison.html')
